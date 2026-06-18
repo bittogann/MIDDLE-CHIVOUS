@@ -1,0 +1,265 @@
+{
+  "PRODUCTS": [
+    {
+      "id": 1,
+      "slug": "hot-girl-dont-cry-teeshirt",
+      "name": "HOT GIRL DON'T CRY TEESHIRT",
+      "category": "Tee",
+      "price": 250000,
+      "oldPrice": null,
+      "colors": [
+        {
+          "hex": "#111111",
+          "name": "Đen"
+        },
+        {
+          "hex": "#2f4f8f",
+          "name": "Navy"
+        },
+        {
+          "hex": "#ffffff",
+          "name": "Trắng"
+        }
+      ],
+      "sizes": [
+        "M",
+        "L"
+      ],
+      "soldOutSizes": [],
+      "badge": null,
+      "isNew": true,
+      "isSale": false,
+      "stock": 20,
+      "desc": "",
+      "care": "",
+      "material": "",
+      "images": []
+    },
+    {
+      "id": 2,
+      "slug": "im-young--risk-teeshirt",
+      "name": "I'M YOUNG & RISK TEESHIRT",
+      "category": "Tee",
+      "price": 250000,
+      "oldPrice": null,
+      "colors": [
+        {
+          "hex": "#111111",
+          "name": "Đen"
+        },
+        {
+          "hex": "#ffffff",
+          "name": "Trắng"
+        },
+        {
+          "hex": "#2f4f8f",
+          "name": "Navy"
+        }
+      ],
+      "sizes": [
+        "M",
+        "L"
+      ],
+      "soldOutSizes": [],
+      "badge": null,
+      "isNew": true,
+      "isSale": false,
+      "stock": 20,
+      "desc": "",
+      "care": "",
+      "material": "",
+      "images": []
+    }
+  ],
+  "USERS": [
+    {
+      "id": "admin-001",
+      "email": "admin@midfinger.com",
+      "password": "$2a$12$Ds3GhEIqZd.xNXsmxRLyzeI8/qHXPzls.tlDRqDSntIB.0uH14//q",
+      "firstName": "Admin",
+      "lastName": "Midfinger",
+      "phone": "",
+      "address": {},
+      "role": "admin",
+      "createdAt": "2026-06-14T13:28:03.778Z"
+    },
+    {
+      "id": "39c279cb-627d-491c-a257-6926022ea3c3",
+      "email": "bittogan14@gmail.com",
+      "password": "$2a$12$C6pg8InqLWiA3DqHiNJKuOQBc9BwfqTcfqV.kHp5gfpuMOKtB3Tiy",
+      "firstName": " ne",
+      "lastName": "huy",
+      "phone": "",
+      "address": {},
+      "role": "user",
+      "createdAt": "2026-06-14T13:28:33.426Z"
+    },
+    {
+      "id": "dfbdbbb2-2901-41ba-a0cb-e007667ef1bb",
+      "email": "bittogan1401@gmail.com",
+      "password": "$2a$12$0OWkZZyGhQMilbCmwI0wB.Z4gwti.8.bqcca8d7mLjMGq.LH7ly9C",
+      "firstName": "dang",
+      "lastName": "huy",
+      "phone": "",
+      "address": {},
+      "role": "user",
+      "createdAt": "2026-06-14T13:50:29.606Z"
+    }
+  ],
+  "ORDERS": [
+    {
+      "id": "6f185324-d097-4bd1-a726-2e8eb2ec4a17",
+      "orderNumber": "MF-052113",
+      "customer": {
+        "firstName": "121",
+        "lastName": "huy",
+        "email": "bittogan1401@gmail.com",
+        "phone": "012323213213",
+        "address": "3213213",
+        "city": "21321321"
+      },
+      "items": [
+        {
+          "productId": 1,
+          "name": "MF Classic Tee",
+          "size": "XS",
+          "colorHex": "#111",
+          "qty": 1,
+          "unitPrice": 350000,
+          "lineTotal": 350000
+        }
+      ],
+      "subtotal": 350000,
+      "shippingFee": 30000,
+      "discount": 0,
+      "discountInfo": null,
+      "total": 380000,
+      "shippingMethod": "standard",
+      "paymentMethod": "cod",
+      "status": "processing",
+      "createdAt": "2026-06-14T13:50:52.115Z",
+      "userId": "dfbdbbb2-2901-41ba-a0cb-e007667ef1bb"
+    }
+  ],
+  "DISCOUNT_CODES": {
+    "MIDFINGER10": {
+      "type": "percent",
+      "value": 10,
+      "desc": "Giảm 10%"
+    },
+    "FREESHIP": {
+      "type": "freeship",
+      "value": 0,
+      "desc": "Miễn phí vận chuyển"
+    },
+    "NEWKID20": {
+      "type": "percent",
+      "value": 20,
+      "desc": "Giảm 20% cho khách mới"
+    }
+  },
+  "HOMEPAGE": {
+    "ticker": {
+      "enabled": true,
+      "items": [
+        "FREE SHIP ĐƠN TỪ 500K",
+        "NEW DROP: SS25 \"BIG KIDS\"",
+        "ĐÀ NẴNG",
+        "IF WE VIBE, WE VIBE"
+      ]
+    },
+    "hero": {
+      "eyebrow": "huynef",
+      "title": "ĐANG\nLÀM\nHE\nHE",
+      "subtitle": "Con người luôn vận động giữa những mặt đối lập — mạnh mẽ và mong manh, lý trí và cảm xúc, ánh sáng và bóng tối. Chính những chuyển động ấy tạo nên bản sắc riêng của mỗi cá nhân. Nơi trang phục không chỉ là thứ để mặc, mà còn là cách để kể câu chuyện về con người bạn.",
+      "btnPrimary": "Shop Now",
+      "btnSecondary": "Xem New Drop",
+      "image": "/images/1781362939708-575880.jpg",
+      "video": "/images/1781362939708-575880.jpg",
+      "mediaType": "image"
+    },
+    "marquee": {
+      "enabled": true,
+      "row1": [
+        "IF WE VIBE, WE VIBE",
+        "MIDDLE WAVY"
+      ],
+      "row2": [
+        "ART — STREETWEAR — VIBING",
+        "SINCE 2024"
+      ]
+    },
+    "banner": {
+      "enabled": false,
+      "title": "NEW DROP",
+      "subtitle": "SS26 Collection — Có mặt ngay hôm nay",
+      "btnText": "Xem ngay",
+      "btnLink": "/shop",
+      "image": null,
+      "video": null,
+      "mediaType": "none"
+    },
+    "about": {
+      "eyebrow": "Về chúng tôi",
+      "title": "Born in Danang.",
+      "desc": "MIDWAVY ra đời năm 2024 với niềm tin niềm tin rằng bản sắc không phải là thứ được sinh ra hoàn hảo, mà được hình thành qua trải nghiệm, lựa chọn và những thay đổi của cuộc sống.\nChúng tôi tạo ra những sản phẩm mang tinh thần tự do, cá tính và chân thật — dành cho những con người không ngừng khám phá bản thân, chấp nhận những mặt đối lập bên trong mình và biến chúng thành dấu ấn riêng.",
+      "stats": [
+        {
+          "num": "2024",
+          "label": "Thành lập"
+        },
+        {
+          "num": "Tiền thân",
+          "label": "Wimheart Chic"
+        },
+        {
+          "num": "10+",
+          "label": "Thiết kế mỗi năm"
+        },
+        {
+          "num": "Store",
+          "label": "Online shop"
+        }
+      ]
+    },
+    "countdown": {
+      "enabled": true,
+      "title": "SS26\n\"BIG WAVE\"\nCollection",
+      "desc": "Bộ sưu tập mùa hè 2026 — lấy cảm hứng từ tinh thần tự do không giới hạn.",
+      "targetDate": "2026-06-17T23:33:15.971Z"
+    }
+  },
+  "STORES": [
+    {
+      "id": 1,
+      "name": "MIDWAVY — ĐÀ NẴNG",
+      "addr": "Địa chỉ tại Đà Nẵng",
+      "hours": "0559.854.721",
+      "mapUrl": ""
+    },
+    {
+      "id": 2,
+      "name": "MIDWAVY",
+      "addr": "Đà Nẵng City",
+      "hours": "bittogan14@gmail.com",
+      "mapUrl": ""
+    }
+  ],
+  "SETTINGS": {
+    "brandName": "MIDWAVY",
+    "slogan": "If we vibe, we vibe",
+    "footerDesc": "Streetwear brand sinh ra từ đường phố Đà Nẵng. EST. 2024.",
+    "estYear": "2024",
+    "social": {
+      "instagram": "#",
+      "tiktok": "#",
+      "facebook": "https://www.facebook.com/wimheartchic"
+    },
+    "seo": {
+      "title": "MIDWAVY — Streetwear Vietnam",
+      "description": "Streetwear brand sinh ra từ đường phố Đà Nẵng. EST. 2024.",
+      "keywords": "streetwear, vietnam, midwavy, fashion"
+    },
+    "freeShipThreshold": 500000
+  }
+}
