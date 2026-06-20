@@ -36,7 +36,7 @@ export default function ShippingPolicy() {
       </Section>
 
       <Section title="3. Khu vực giao hàng">
-        <p>MIDDLE CHIEVOUS giao hàng toàn quốc thông qua các đối tác vận chuyển uy tín.</p>
+        <p>MIDDLE CHIVOUS giao hàng toàn quốc thông qua các đối tác vận chuyển uy tín.</p>
         <p>Giao hàng quốc tế hiện chưa được hỗ trợ.</p>
       </Section>
 

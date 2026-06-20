@@ -128,26 +128,44 @@ export default function Navbar({ onCartOpen, onSearchOpen }) {
         .mf-mobile-link:hover { background: #fafafa; }
 
         @media (max-width: 768px) {
-          .mf-nav {
-            grid-template-columns: 1fr;
-            justify-content: center;
-          }
-          .mf-desktop-links { display: none; }
-          .mf-desktop-right { display: none; }
-          .mf-mobile-hamburger {
-            display: flex;
-            position: absolute; left: 1rem; top: 50%;
-            transform: translateY(-50%);
-            background: none; border: none; cursor: pointer;
-            padding: 6px; color: #111;
-          }
-          .mf-mobile-right {
-            display: flex;
-            position: absolute; right: 1rem; top: 50%;
-            transform: translateY(-50%);
-            align-items: center; gap: 8px;
-          }
-        }
+  .mf-nav {
+    grid-template-columns: 40px 1fr 40px;
+    padding: 0 1rem;
+    gap: 0;
+    position: fixed;
+  }
+  .mf-desktop-links { display: none; }
+  .mf-desktop-right { display: none; }
+  .mf-mobile-hamburger {
+    display: flex;
+    position: static;
+    transform: none;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 6px;
+    color: #111;
+    justify-self: start;
+    align-self: center;
+  }
+  .mf-logo-wrap {
+    justify-self: center;
+    gap: 6px;
+  }
+  .mf-logo-text {
+    font-size: 18px;
+    letter-spacing: 0.1em;
+  }
+  .mf-mobile-right {
+    display: flex;
+    position: static;
+    transform: none;
+    align-items: center;
+    gap: 4px;
+    justify-self: end;
+    align-self: center;
+  }
+}
       `}</style>
 
       <nav className="mf-nav" style={{
@@ -170,7 +188,7 @@ export default function Navbar({ onCartOpen, onSearchOpen }) {
 
         <div className="mf-logo-wrap" onClick={() => navigate('/')}>
           <img src="/logo.svg" alt="Midfinger" style={{ height: 28, width: 'auto' }} />
-          <span className="mf-logo-text">MIDDLE CHIEVOUS</span>
+          <span className="mf-logo-text">MIDDLE CHIVOUS</span>
         </div>
 
         <div className="mf-desktop-right">
@@ -222,7 +240,7 @@ export default function Navbar({ onCartOpen, onSearchOpen }) {
             onClick={e => e.stopPropagation()}
           >
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '0 1.5rem', height: 56, borderBottom: '1px solid #f0f0f0' }}>
-              <span style={{ fontWeight: 900, fontSize: 18, letterSpacing: '0.14em' }}>MIDDLE CHIEVOUS</span>
+              <span style={{ fontWeight: 900, fontSize: 18, letterSpacing: '0.14em' }}>MIDDLE CHIVOUS</span>
               <button style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 6, color: '#555' }} onClick={() => setMenuOpen(false)}>
                 <CloseIcon />
               </button>

@@ -275,7 +275,7 @@ export default function Checkout({ onToast }) {
                 <div style={{ background: 'var(--off)', padding: '1.5rem', marginTop: '1rem', textAlign: 'center' }}>
                   <p style={{ fontSize: 13, marginBottom: '1rem' }}>
                     <strong>Quét mã để chuyển khoản:</strong><br />
-                    Nội dung: MID-{Date.now().toString().slice(-6)}
+                    Nội dung: MC-{Date.now().toString().slice(-6)}
                   </p>
                   <img
                     src="/qr-vietcombank.jpg"

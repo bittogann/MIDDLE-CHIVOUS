@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useWishlistStore } from '../store/wishlistStore';
 import ProductSVG from './ProductSVG';
 import { fmt } from '../utils/format';
-
+const BASE = import.meta.env.VITE_API_URL?.replace('/api', '') || '${BASE}'
 export default function ProductCard({ product, onToast }) {
   const navigate = useNavigate();
   const { ids, toggle } = useWishlistStore();
@@ -23,7 +23,7 @@ export default function ProductCard({ product, onToast }) {
         <div className="prod-img-inner">
   {product.images?.[0]
     ? <img
-        src={`http://localhost:4000${product.images[0]}`}
+        src={`${BASE}${product.images[0]}`}
         alt={product.name}
         style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
       />

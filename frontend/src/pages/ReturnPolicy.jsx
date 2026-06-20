@@ -12,7 +12,7 @@ export default function ReturnPolicy() {
       </Section>
 
       <Section title="2. Quy trình đổi trả">
-        <p>Bước 1: Liên hệ MIDDLE CHIEVOUS qua Instagram hoặc Facebook với mã đơn hàng.</p>
+        <p>Bước 1: Liên hệ MIDDLE CHIVOUS qua Instagram hoặc Facebook với mã đơn hàng.</p>
         <p>Bước 2: Gửi sản phẩm về địa chỉ cửa hàng gần nhất.</p>
         <p>Bước 3: Chúng tôi kiểm tra và xử lý trong vòng 3–5 ngày làm việc.</p>
         <p>Bước 4: Hoàn tiền hoặc gửi sản phẩm mới cho bạn.</p>
@@ -20,7 +20,7 @@ export default function ReturnPolicy() {
 
       <Section title="3. Hình thức hoàn tiền">
         <p>Hoàn tiền qua chuyển khoản ngân hàng trong vòng 3–7 ngày làm việc.</p>
-        <p>Phí vận chuyển đổi trả do khách hàng chịu trừ trường hợp lỗi từ MIDDLE CHIEVOUS.</p>
+        <p>Phí vận chuyển đổi trả do khách hàng chịu trừ trường hợp lỗi từ MIDDLE CHIVOUS.</p>
       </Section>
 
       <Section title="4. Liên hệ">

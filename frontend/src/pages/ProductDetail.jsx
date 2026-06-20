@@ -8,7 +8,7 @@ import ProductCard from '../components/ProductCard'
 import ProductSVG from '../components/ProductSVG'
 import STATIC_PRODUCTS from '../data/staticProducts'
 import { fmt } from '../utils/format'
-
+const BASE = import.meta.env.VITE_API_URL?.replace('/api', '') || '${BASE}'
 export default function ProductDetail({ onToast, onCartOpen }) {
   const { id } = useParams()
   const navigate = useNavigate()
@@ -91,9 +91,9 @@ export default function ProductDetail({ onToast, onCartOpen }) {
           <div className="pd-main-img">
             {product.images?.[colorIdx] || product.images?.[0]
               ? <img
-                  src={`http://localhost:4000${product.images[colorIdx] || product.images[0]}`}
+                  src={`${BASE}${product.images[colorIdx] || product.images[0]}`}
                   alt={product.name}
-                  style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
+                  style={{ width: '100%', height: '100%', objectFit: 'contain', background: '#ffffff', display: 'block' }}
                 />
               : <ProductSVG product={product} colorIdx={colorIdx} />
             }
@@ -106,7 +106,7 @@ export default function ProductDetail({ onToast, onCartOpen }) {
                     className={`pd-thumb${i === colorIdx ? ' active' : ''}`}
                     onClick={() => setColorIdx(i)}
                   >
-                    <img src={`http://localhost:4000${img}`} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                    <img src={`${BASE}${img}`} alt="" style={{ width: '100%', height: '100%', objectFit: 'contain', background: '#ffffff' }} />
                   </div>
                 ))
               : product.colors?.map((c, i) => (
@@ -124,7 +124,7 @@ export default function ProductDetail({ onToast, onCartOpen }) {
 
         {/* INFO */}
         <div className="pd-info">
-          <div className="pd-brand">MIDDLE CHIEVOUS / {product.category}</div>
+          <div className="pd-brand">MIDDLE CHIVOUS / {product.category}</div>
           <h1 className="pd-title">{product.name}</h1>
           <div className="pd-price-row">
             <span className="pd-price">{fmt(product.price)}</span>

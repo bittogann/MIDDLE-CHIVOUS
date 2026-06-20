@@ -6,7 +6,7 @@ export default function SizeGuide() {
       </h1>
 
       <p style={{ fontSize: 14, color: '#666', lineHeight: 1.8, marginBottom: '2rem' }}>
-        MIDDLE CHIEVOUS sử dụng form <strong>Oversize</strong> — nếu bạn muốn vừa vặn hơn, hãy chọn size nhỏ hơn 1 size so với thông thường.
+        MIDDLE CHIVOUS sử dụng form <strong>Oversize</strong> — nếu bạn muốn vừa vặn hơn, hãy chọn size nhỏ hơn 1 size so với thông thường.
       </p>
 
       <Section title="Áo Tee & Hoodie">

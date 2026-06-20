@@ -708,7 +708,173 @@ function AddDiscountForm({ onAdd, onClose }) {
     </>
   )
 }
+
 // ══════════════════════════════════════════════════════════════════════
+// TAB: DASHBOARD
+// ══════════════════════════════════════════════════════════════════════
+function TabDashboard() {
+  const [stats, setStats] = useState(null)
+  const [loading, setLoading] = useState(true)
+  const [period, setPeriod] = useState('month')
+
+  useEffect(() => {
+    af('/stats').then(r => r.json()).then(d => {
+      if (d.success) setStats(d)
+      setLoading(false)
+    })
+  }, [])
+
+  if (loading) return <div style={S.empty}><p>Đang tải thống kê...</p></div>
+  if (!stats) return <div style={S.empty}><p>Không thể tải dữ liệu</p></div>
+
+  const fmt = (n) => Number(n).toLocaleString('vi-VN')
+
+  const STATUS_LABELS = { pending: 'Chờ xác nhận', confirmed: 'Đã xác nhận', shipping: 'Đang giao', delivered: 'Đã giao', cancelled: 'Đã huỷ' }
+  const STATUS_COLORS = { pending: '#f59e0b', confirmed: '#3b82f6', shipping: '#8b5cf6', delivered: '#10b981', cancelled: '#ef4444' }
+
+  const revenue = period === 'today' ? stats.revenue.today : period === 'week' ? stats.revenue.week : stats.revenue.month
+  const newUsers = period === 'today' ? stats.users.today : period === 'week' ? stats.users.week : stats.users.month
+
+  // Tính max để vẽ bar chart
+  const maxRevenue = Math.max(...(stats.revenue.byDay.map(d => d.total)), 1)
+
+  return (
+    <div style={{ maxWidth: 900 }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 24 }}>
+        <h2 style={{ margin: 0, fontSize: 20, fontWeight: 800 }}>Dashboard</h2>
+        <div style={{ display: 'flex', gap: 6 }}>
+          {[
+            { key: 'today', label: 'Hôm nay' },
+            { key: 'week', label: 'Tuần này' },
+            { key: 'month', label: 'Tháng này' },
+          ].map(p => (
+            <button key={p.key} onClick={() => setPeriod(p.key)}
+              style={{ ...S.sizeBtn, background: period === p.key ? '#111' : '#f0f0f0', color: period === p.key ? '#fff' : '#111' }}>
+              {p.label}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* Thẻ thống kê tổng quan */}
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 16, marginBottom: 24 }}>
+        <div style={{ ...S.card, marginBottom: 0 }}>
+          <p style={{ ...S.sectionTitle, marginBottom: 8 }}>Doanh thu</p>
+          <p style={{ fontSize: 28, fontWeight: 900, margin: '0 0 4px', fontFamily: 'Inter, sans-serif' }}>{fmt(revenue)}₫</p>
+          <p style={{ fontSize: 12, color: '#888', margin: 0 }}>
+            {period === 'today' ? 'Hôm nay' : period === 'week' ? 'Tuần này' : 'Tháng này'}
+          </p>
+        </div>
+        <div style={{ ...S.card, marginBottom: 0 }}>
+          <p style={{ ...S.sectionTitle, marginBottom: 8 }}>Tổng đơn hàng</p>
+          <p style={{ fontSize: 28, fontWeight: 900, margin: '0 0 4px' }}>{stats.orders.total}</p>
+          <p style={{ fontSize: 12, color: '#888', margin: 0 }}>Tất cả thời gian</p>
+        </div>
+        <div style={{ ...S.card, marginBottom: 0 }}>
+          <p style={{ ...S.sectionTitle, marginBottom: 8 }}>Khách hàng mới</p>
+          <p style={{ fontSize: 28, fontWeight: 900, margin: '0 0 4px' }}>{newUsers}</p>
+          <p style={{ fontSize: 12, color: '#888', margin: 0 }}>
+            {period === 'today' ? 'Hôm nay' : period === 'week' ? 'Tuần này' : 'Tháng này'} · Tổng: {stats.users.total}
+          </p>
+        </div>
+      </div>
+
+      {/* Đơn hàng theo trạng thái */}
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16, marginBottom: 24 }}>
+        <div style={S.card}>
+          <p style={S.sectionTitle}>Đơn hàng theo trạng thái</p>
+          {Object.entries(STATUS_LABELS).map(([key, label]) => {
+            const count = stats.orders.byStatus[key] || 0
+            const total = stats.orders.total || 1
+            const pct = Math.round(count / total * 100)
+            return (
+              <div key={key} style={{ marginBottom: 12 }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 13, marginBottom: 4 }}>
+                  <span style={{ fontWeight: 500 }}>{label}</span>
+                  <span style={{ fontWeight: 700 }}>{count} <span style={{ color: '#aaa', fontWeight: 400 }}>({pct}%)</span></span>
+                </div>
+                <div style={{ height: 6, background: '#f0f0f0', borderRadius: 3, overflow: 'hidden' }}>
+                  <div style={{ height: '100%', width: `${pct}%`, background: STATUS_COLORS[key], borderRadius: 3, transition: 'width .5s' }} />
+                </div>
+              </div>
+            )
+          })}
+        </div>
+
+        {/* Biểu đồ doanh thu theo ngày trong tháng */}
+        <div style={S.card}>
+          <p style={S.sectionTitle}>Doanh thu theo ngày (tháng này)</p>
+          {stats.revenue.byDay.length === 0 ? (
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: 120, color: '#ccc', fontSize: 13 }}>
+              Chưa có doanh thu tháng này
+            </div>
+          ) : (
+            <div style={{ display: 'flex', alignItems: 'flex-end', gap: 4, height: 120, paddingTop: 8 }}>
+              {stats.revenue.byDay.map(d => {
+                const height = Math.max(4, Math.round(d.total / maxRevenue * 100))
+                return (
+                  <div key={d._id} style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 4 }} title={`Ngày ${d._id}: ${fmt(d.total)}₫ (${d.count} đơn)`}>
+                    <div style={{ width: '100%', height: `${height}%`, background: '#111', borderRadius: '2px 2px 0 0', minHeight: 4, transition: 'height .3s' }} />
+                    <span style={{ fontSize: 9, color: '#aaa' }}>{d._id}</span>
+                  </div>
+                )
+              })}
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* Đơn hàng gần đây */}
+      <div style={S.card}>
+        <p style={S.sectionTitle}>Đơn hàng gần đây</p>
+        <RecentOrders />
+      </div>
+    </div>
+  )
+}
+
+function RecentOrders() {
+  const [orders, setOrders] = useState([])
+  const STATUS_LABELS = { pending: 'Chờ xác nhận', confirmed: 'Đã xác nhận', shipping: 'Đang giao', delivered: 'Đã giao', cancelled: 'Đã huỷ' }
+  const STATUS_COLORS = { pending: '#f59e0b', confirmed: '#3b82f6', shipping: '#8b5cf6', delivered: '#10b981', cancelled: '#ef4444' }
+
+  useEffect(() => {
+    af('/orders').then(r => r.json()).then(d => {
+      if (Array.isArray(d)) setOrders(d.slice(0, 5))
+    })
+  }, [])
+
+  if (orders.length === 0) return <p style={{ color: '#aaa', fontSize: 13, textAlign: 'center', padding: '1rem 0' }}>Chưa có đơn hàng nào</p>
+
+  return (
+    <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 13 }}>
+      <thead>
+        <tr style={{ borderBottom: '1px solid #f0f0f0' }}>
+          {['Mã đơn', 'Khách hàng', 'Tổng tiền', 'Trạng thái', 'Thời gian'].map(h => (
+            <th key={h} style={{ padding: '8px 0', textAlign: 'left', fontWeight: 700, fontSize: 11, color: '#888', letterSpacing: '0.06em', textTransform: 'uppercase' }}>{h}</th>
+          ))}
+        </tr>
+      </thead>
+      <tbody>
+        {orders.map(o => (
+          <tr key={o.orderNumber} style={{ borderBottom: '1px solid #f5f5f5' }}>
+            <td style={{ padding: '10px 0', fontFamily: 'monospace', fontWeight: 700 }}>#{o.orderNumber}</td>
+            <td style={{ padding: '10px 0' }}>{o.customer?.lastName} {o.customer?.firstName}</td>
+            <td style={{ padding: '10px 0', fontWeight: 600 }}>{Number(o.total).toLocaleString('vi-VN')}₫</td>
+            <td style={{ padding: '10px 0' }}>
+              <span style={{ fontSize: 11, fontWeight: 700, padding: '3px 8px', borderRadius: 4, background: STATUS_COLORS[o.status] + '20', color: STATUS_COLORS[o.status] }}>
+                {STATUS_LABELS[o.status]}
+              </span>
+            </td>
+            <td style={{ padding: '10px 0', color: '#888', fontSize: 12 }}>
+              {new Date(o.createdAt).toLocaleDateString('vi-VN')}
+            </td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  )
+}
 // TAB: DANH MỤC
 // ══════════════════════════════════════════════════════════════════════
 function TabCategories() {
@@ -1022,6 +1188,7 @@ function Modal({ title, children, onClose }) {
 // MAIN
 // ══════════════════════════════════════════════════════════════════════
 const TABS = [
+  { key: 'dashboard', label: '📊 Dashboard' },
   { key: 'products', label: '📦 Sản phẩm' },
   { key: 'categories', label: '🏷️ Danh mục' },
   { key: 'homepage', label: '🏠 Trang chủ' },
@@ -1033,7 +1200,7 @@ const TABS = [
 ]
 
 export default function AdminPage() {
-  const [tab, setTab] = useState('products')
+  const [tab, setTab] = useState('dashboard')
   const [adminToken, setAdminToken] = useState(() => {
     const authToken = localStorage.getItem('mf_token')
     if (authToken) return authToken
@@ -1072,7 +1239,7 @@ export default function AdminPage() {
     <div style={S.page}>
       <div style={S.topNav}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 24 }}>
-          <span style={{ fontWeight: 900, fontSize: 16, letterSpacing: '0.1em' }}>MIDDLE CHIEVOUS</span>
+          <span style={{ fontWeight: 900, fontSize: 16, letterSpacing: '0.1em' }}>MIDDLE CHIVOUS</span>
           <span style={{ fontSize: 11, color: '#888', letterSpacing: '0.08em', textTransform: 'uppercase' }}>Admin Panel</span>
         </div>
         <div style={{ display: 'flex', gap: 4 }}>
@@ -1126,6 +1293,7 @@ export default function AdminPage() {
       </div>
 
       <div style={S.content}>
+        {tab === 'dashboard' && <TabDashboard />}
         {tab === 'products' && <TabProducts />}
         {tab === 'categories' && <TabCategories />}
         {tab === 'homepage' && <TabHomepage />}

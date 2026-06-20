@@ -72,7 +72,7 @@ router.post('/', async (req, res) => {
     }
 
     const total = Math.max(0, subtotal + shippingFee - discount)
-    const orderNumber = 'MF-' + Date.now().toString().slice(-6)
+    const orderNumber = 'MC-' + Date.now().toString().slice(-6)
 
     // Get userId if token present (optional auth)
     let userId = null

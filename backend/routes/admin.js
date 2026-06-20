@@ -52,7 +52,8 @@ const uploadAny = multer({
 });
 
 // ── Auth ───────────────────────────────────────────────────────────────
-const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'dangbaohuy2003';
+const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD;
+if (!ADMIN_PASSWORD) throw new Error('ADMIN_PASSWORD chưa được set trong .env');
 
 async function adminAuth(req, res, next) {
   if (req.headers['x-admin-token'] === ADMIN_PASSWORD) return next();
@@ -420,7 +421,6 @@ router.post('/categories', adminAuth, async (req, res) => {
 });
 
 router.delete('/categories/:id', adminAuth, async (req, res) => {
-  const inUse = await Product.findOne({ category: req.params.name });
   // Kiểm tra theo tên, không theo id, vì sản phẩm lưu category bằng tên
   const category = await Category.findById(req.params.id);
   if (!category) return res.status(404).json({ error: 'Không tìm thấy danh mục' });
@@ -433,5 +433,82 @@ router.delete('/categories/:id', adminAuth, async (req, res) => {
   await Category.deleteOne({ _id: req.params.id });
   res.json({ success: true });
 });
+
+// ══════════════════════════════════════════════════════════════════════
+// DASHBOARD STATS
+// ══════════════════════════════════════════════════════════════════════
+router.get('/stats', adminAuth, async (req, res) => {
+  try {
+    const now = new Date()
+    const startOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate())
+    const startOfWeek = new Date(now)
+    startOfWeek.setDate(now.getDate() - now.getDay())
+    startOfWeek.setHours(0, 0, 0, 0)
+    const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1)
+
+    // Đơn hàng theo trạng thái
+    const ordersByStatus = await Order.aggregate([
+      { $group: { _id: '$status', count: { $sum: 1 } } }
+    ])
+    const statusMap = {}
+    ordersByStatus.forEach(s => { statusMap[s._id] = s.count })
+
+    // Doanh thu
+    const revenueToday = await Order.aggregate([
+      { $match: { createdAt: { $gte: startOfDay }, status: { $ne: 'cancelled' } } },
+      { $group: { _id: null, total: { $sum: '$total' } } }
+    ])
+    const revenueWeek = await Order.aggregate([
+      { $match: { createdAt: { $gte: startOfWeek }, status: { $ne: 'cancelled' } } },
+      { $group: { _id: null, total: { $sum: '$total' } } }
+    ])
+    const revenueMonth = await Order.aggregate([
+      { $match: { createdAt: { $gte: startOfMonth }, status: { $ne: 'cancelled' } } },
+      { $group: { _id: null, total: { $sum: '$total' } } }
+    ])
+
+    // Doanh thu theo ngày trong tháng (cho biểu đồ)
+    const revenueByDay = await Order.aggregate([
+      { $match: { createdAt: { $gte: startOfMonth }, status: { $ne: 'cancelled' } } },
+      { $group: {
+        _id: { $dayOfMonth: '$createdAt' },
+        total: { $sum: '$total' },
+        count: { $sum: 1 }
+      }},
+      { $sort: { '_id': 1 } }
+    ])
+
+    // Khách hàng mới
+    const newUsersToday = await User.countDocuments({ createdAt: { $gte: startOfDay } })
+    const newUsersWeek = await User.countDocuments({ createdAt: { $gte: startOfWeek } })
+    const newUsersMonth = await User.countDocuments({ createdAt: { $gte: startOfMonth } })
+    const totalUsers = await User.countDocuments({ role: 'user' })
+
+    // Tổng đơn hàng
+    const totalOrders = await Order.countDocuments()
+
+    res.json({
+      success: true,
+      orders: {
+        byStatus: statusMap,
+        total: totalOrders
+      },
+      revenue: {
+        today: revenueToday[0]?.total || 0,
+        week: revenueWeek[0]?.total || 0,
+        month: revenueMonth[0]?.total || 0,
+        byDay: revenueByDay
+      },
+      users: {
+        today: newUsersToday,
+        week: newUsersWeek,
+        month: newUsersMonth,
+        total: totalUsers
+      }
+    })
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message })
+  }
+})
 
 module.exports = router;

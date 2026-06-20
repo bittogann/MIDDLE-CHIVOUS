@@ -16,7 +16,15 @@ const PORT = process.env.PORT || 4000;
 // ── Security & Middleware ──────────────────────────────────────────────
 // app.use(helmet({...}));
 app.use(cors({
-  origin: process.env.FRONTEND_URL || 'http://localhost:5173',
+  origin: function(origin, callback) {
+    const allowed = [
+      'http://localhost:5173',
+      'http://localhost:3000',
+      process.env.FRONTEND_URL,
+    ].filter(Boolean)
+    if (!origin || allowed.includes(origin)) return callback(null, true)
+    callback(new Error('Not allowed by CORS'))
+  },
   credentials: true
 }));
 app.use((req, res, next) => {
